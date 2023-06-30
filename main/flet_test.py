@@ -1,38 +1,37 @@
 import flet as ft
 from datetime import timedelta
 
+
 def main(page):
-    def handel_click(e):
-        press_min = int(a.value)
-        time_now = timedelta(hours=int((b.value)), minutes=int((c.value)))
+    def calculator(e):
+        press_min = int(min_press.value)
+        time_now = timedelta(hours=int(hours.value), minutes=int(minutes.value))
         max_press_drop = round(press_min / 3)
         press_ctrl_exit = press_min - max_press_drop
         delta_time = timedelta(minutes=(round(max_press_drop * 6.8 / 45)))
         total_time = timedelta(minutes=(round(press_min * 6.8 / 45)))
         time_on_exit = time_now + delta_time
         comeback_time = time_now + total_time
-
-        r.value = max_press_drop, press_ctrl_exit, delta_time, total_time, time_on_exit, comeback_time
-        print(f' Pmax.пад = {max_press_drop}, Рк.вых =  {press_ctrl_exit}, Дельта Т = {delta_time}, Тобщ = {total_time}, Т вых = {time_on_exit}, Т возвр = {comeback_time}')
+        d.value = f' Pmax.пад = {max_press_drop};  Рк.вых =  {press_ctrl_exit};  Дельта Т = {delta_time};  Тобщ = {total_time};  Т вых = {time_on_exit};  Т возвр = {comeback_time}'
 
         page.update()
 
 
-    a = ft.TextField(label='Мин.давление')
-    b = ft.TextField(label='Час')
-    c = ft.TextField(label='Минуты')
-    r = ft.TextField(label='результат')
-    s = ft.TextButton(text='рассчитать', on_click=handel_click)
-    page.add(ft.Column([a,b,c,s,r]))
-ft.app(target=main)
+    min_press = ft.TextField(label='введите минимальное давление:', width=280, helper_text='Введите время включения в НДС:')
+    hours = ft.TextField(label='Введите часы:', width=280, hint_text='от 0 до 24')
+    minutes = ft.TextField(label='Введите минуты:', width=280,hint_text='от 0 до 60')
 
-def calculator():
-    press_min = int(input('Введите минимальное давление при включении:'))
-    time_now = timedelta(hours=int(input('час: ')), minutes=(int(input('минуты: '))))
-    max_press_drop = round(press_min / 3)
-    press_ctrl_exit = press_min - max_press_drop
-    delta_time = timedelta(minutes=(round(max_press_drop * 6.8 / 45)))
-    total_time = timedelta(minutes=(round(press_min * 6.8 / 45)))
-    time_on_exit = time_now + delta_time
-    comeback_time = time_now + total_time
-    return f' Pmax.пад = {max_press_drop}, Рк.вых =  {press_ctrl_exit}, Дельта Т = {delta_time}, Тобщ = {total_time}, Т вых = {time_on_exit}, Т возвр = {comeback_time}'
+
+
+    d = ft.TextField(label='Результат')
+    c = ft.ElevatedButton(text='Рассчитать', on_click=calculator,
+                          bgcolor=ft.colors.BLACK, color=ft.colors.WHITE)
+
+    page.controls.append(ft.Text('Калькулятор ГДЗС v1.0',style=ft.TextThemeStyle.DISPLAY_SMALL))
+    # page.controls.pop()
+    page.add(ft.Column([min_press, hours, minutes, c, d]))
+    page.update()
+
+
+
+ft.app(target=main)
